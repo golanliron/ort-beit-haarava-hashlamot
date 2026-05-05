@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>רפלקציה — יעקב | לוח גאנט שנתי לריכוז חברתי</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Heebo', sans-serif;
+  background: #1a1a2e;
+  color: white;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.slide {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.6s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.slide.active {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: all;
+}
+
+.slide-1 { background: linear-gradient(135deg, #004D40, #00695C, #00897B); }
+.slide-2 { background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); }
+.slide-3 { background: linear-gradient(135deg, #1565C0, #1976D2, #2196F3); }
+.slide-4 { background: linear-gradient(135deg, #E65100, #F57C00, #FF9800); }
+.slide-5 { background: linear-gradient(135deg, #6A1B9A, #8E24AA, #AB47BC); }
+.slide-6 { background: linear-gradient(135deg, #C62828, #D32F2F, #E53935); }
+.slide-7 { background: linear-gradient(135deg, #2E7D32, #388E3C, #43A047); }
+.slide-8 { background: linear-gradient(135deg, #004D40, #00695C, #00897B); }
+
+.slide h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  margin-bottom: 20px;
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.slide h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  font-weight: 300;
+  opacity: 0.8;
+  margin-top: 10px;
+}
+
+.big-emoji {
+  font-size: 4rem;
+  margin-bottom: 16px;
+}
+
+.content-box {
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 32px 40px;
+  max-width: 750px;
+  width: 100%;
+  margin-top: 24px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+.content-box p {
+  font-size: 1.15rem;
+  line-height: 2;
+  font-weight: 300;
+}
+
+.highlight { color: #FFD54F; font-weight: 500; }
+.bold { font-weight: 700; }
+
+.feature-list {
+  list-style: none;
+  margin-top: 10px;
+}
+
+.feature-list li {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.feature-list li:last-child { border-bottom: none; }
+
+.icon { font-size: 1.4rem; min-width: 30px; text-align: center; }
+
+.quote {
+  font-size: 1.5rem;
+  font-style: italic;
+  text-align: center;
+  max-width: 650px;
+  line-height: 2;
+  position: relative;
+  padding: 20px 0;
+}
+
+.quote::before {
+  content: '"';
+  font-size: 5rem;
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  opacity: 0.2;
+  font-family: serif;
+}
+
+.two-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-width: 800px;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.col-card {
+  background: rgba(255,255,255,0.1);
+  border-radius: 14px;
+  padding: 24px;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.col-card h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #FFD54F;
+}
+
+.col-card p {
+  font-size: 1rem;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.credit-section {
+  display: flex;
+  gap: 24px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.credit-card {
+  background: rgba(255,255,255,0.12);
+  border-radius: 14px;
+  padding: 20px 28px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.15);
+  min-width: 180px;
+}
+
+.credit-card .name { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
+.credit-card .role { font-size: 0.9rem; opacity: 0.7; }
+
+/* Gantt mini preview */
+.gantt-preview {
+  background: rgba(255,255,255,0.95);
+  border-radius: 12px;
+  padding: 16px;
+  max-width: 600px;
+  width: 100%;
+  margin-top: 20px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  color: #333;
+  direction: rtl;
+}
+
+.gantt-preview h5 {
+  color: #00695C;
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+}
+
+.gantt-months {
+  display: grid;
+  grid-template-columns: 80px repeat(6, 1fr);
+  gap: 0;
+  font-size: 0.65rem;
+  margin-bottom: 2px;
+}
+
+.gantt-months span {
+  text-align: center;
+  color: #999;
+  font-weight: 600;
+  padding: 4px 0;
+}
+
+.gantt-row-mini {
+  display: grid;
+  grid-template-columns: 80px repeat(6, 1fr);
+  align-items: center;
+  min-height: 28px;
+  border-top: 1px solid #eee;
+}
+
+.gantt-row-mini .row-name {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gantt-cell {
+  height: 100%;
+  position: relative;
+  min-height: 28px;
+  border-right: 1px solid #f0f0f0;
+}
+
+.mini-bar {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 14px;
+  border-radius: 4px;
+}
+
+.mini-marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid;
+  background: white;
+}
+
+/* Navigation */
+.nav {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 100;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(10px);
+  padding: 10px 24px;
+  border-radius: 30px;
+}
+
+.nav-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.1);
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.nav-btn:hover { background: rgba(255,255,255,0.25); }
+
+.slide-counter {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  min-width: 50px;
+  text-align: center;
+}
+
+.dots { display: flex; gap: 6px; }
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.dot.active { background: white; transform: scale(1.3); }
+
+@media (max-width: 768px) {
+  .slide { padding: 30px 20px; }
+  .slide h1 { font-size: 2rem; }
+  .slide h2 { font-size: 1.4rem; }
+  .content-box { padding: 20px; }
+  .two-cols { grid-template-columns: 1fr; }
+  .quote { font-size: 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Slide 1: Cover -->
+<div class="slide slide-1 active" data-slide="1">
+  <div class="big-emoji">📊</div>
+  <h1>לוח גאנט שנתי</h1>
+  <h2>כלי דיגיטלי לריכוז חברתי</h2>
+  <h3 class="subtitle">רפלקציה על תהליך הבנייה והלמידה</h3>
+  <div style="margin-top: 40px; opacity: 0.7; font-size: 1rem;">
+    יעקב — רכז חברתי | תיכון אורט בית הערבה | תשפ"ו
+  </div>
+</div>
+
+<!-- Slide 2: The Problem -->
+<div class="slide slide-2" data-slide="2">
+  <div class="big-emoji">🤦‍♂️</div>
+  <h2>הריכוז החברתי שלי — לפני</h2>
+  <div class="content-box">
+    <ul class="feature-list">
+      <li><span class="icon">📝</span>יומן נייר + דפים מודפסים שהולכים לאיבוד</li>
+      <li><span class="icon">📱</span>תזכורות בוואטסאפ ש"שוכחים" לקרוא</li>
+      <li><span class="icon">😅</span>"יעקב, מתי יום השואה?" — ואני מחפש באקסל</li>
+      <li><span class="icon">🔥</span>כל שנה בונה תוכנית מאפס — בלי בסיס לשנה הבאה</li>
+      <li><span class="icon">🤷‍♂️</span>אין תמונה שנתית אחת — הכל מפוזר בין קבצים</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Slide 3: What I built -->
+<div class="slide slide-3" data-slide="3">
+  <div class="big-emoji">💡</div>
+  <h2>מה בניתי</h2>
+  <div class="gantt-preview">
+    <h5>לוח גאנט שנתי — ריכוז חברתי | תשפ"ז</h5>
+    <div class="gantt-months">
+      <span></span>
+      <span>ספט׳</span><span>אוק׳</span><span>נוב׳</span><span>דצמ׳</span><span>ינו׳</span><span>פבר׳</span>
+    </div>
+    <div class="gantt-row-mini">
+      <div class="row-name">🕯️ יום השואה</div>
+      <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+    </div>
+    <div class="gantt-row-mini">
+      <div class="row-name">🤝 גיבוש כיתתי</div>
+      <div class="gantt-cell"></div><div class="gantt-cell"><div class="mini-bar" style="background:#1565C0;right:10%;width:60%;"></div></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+    </div>
+    <div class="gantt-row-mini">
+      <div class="row-name">💚 התנדבות שוטפת</div>
+      <div class="gantt-cell"><div class="mini-bar" style="background:#2E7D32;right:0;width:100%;border-radius:0"></div></div><div class="gantt-cell"><div class="mini-bar" style="background:#2E7D32;right:0;width:100%;border-radius:0"></div></div><div class="gantt-cell"><div class="mini-bar" style="background:#2E7D32;right:0;width:100%;border-radius:0"></div></div><div class="gantt-cell"><div class="mini-bar" style="background:#2E7D32;right:0;width:100%;border-radius:0"></div></div><div class="gantt-cell"><div class="mini-bar" style="background:#2E7D32;right:0;width:100%;border-radius:0"></div></div><div class="gantt-cell"><div class="mini-bar" style="background:#2E7D32;right:0;width:100%;border-radius:0"></div></div>
+    </div>
+    <div class="gantt-row-mini">
+      <div class="row-name">🎉 חנוכה</div>
+      <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"><div class="mini-bar" style="background:#6A1B9A;right:40%;width:40%;"></div></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+    </div>
+    <div class="gantt-row-mini">
+      <div class="row-name">🏛️ מועצת תלמידים</div>
+      <div class="gantt-cell"><div class="mini-bar" style="background:#00695C;right:40%;width:60%;border-radius:4px 0 0 4px"></div></div><div class="gantt-cell"><div class="mini-bar" style="background:#00695C;right:0;width:10%;border-radius:0 4px 4px 0"></div></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+    </div>
+    <div class="gantt-row-mini">
+      <div class="row-name">🛡️ מניעת סמים</div>
+      <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"><div class="mini-bar" style="background:#AD1457;right:0;width:100%;"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 4: Features -->
+<div class="slide slide-4" data-slide="4">
+  <h2>מה הכלי יודע לעשות</h2>
+  <div class="two-cols">
+    <div class="col-card">
+      <h4>📅 תצוגה שנתית מלאה</h4>
+      <p>12 חודשים, מספטמבר עד אוגוסט — הכל בשורה אחת. רואים את כל השנה במבט אחד.</p>
+    </div>
+    <div class="col-card">
+      <h4>🎨 8 קטגוריות צבעוניות</h4>
+      <p>ימי זיכרון, חינוך חברתי, התנדבות, אירועים, טיולים, מועצת תלמידים, מניעה, תוכניות עבודה.</p>
+    </div>
+    <div class="col-card">
+      <h4>➕ הוספה ועריכה קלה</h4>
+      <p>לוחצים "הוספה", ממלאים שם ותאריכים — וזה מופיע על הלוח. פשוט ככה.</p>
+    </div>
+    <div class="col-card">
+      <h4>🔄 מעבר בין שנים</h4>
+      <p>תשפ"ז? תשפ"ח? לוחצים ומחליפים. כל שנה שמורה בנפרד — בונים על מה שהיה.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 5: Honesty -->
+<div class="slide slide-5" data-slide="5">
+  <div class="big-emoji">😬</div>
+  <h2>גילוי נאות</h2>
+  <div class="content-box">
+    <p>
+      אני יעקב. רכז חברתי. <span class="highlight">לא איש הייטק.</span><br><br>
+      אני יודע לארגן אירועים, לדבר עם תלמידים, לבנות תוכנית חברתית.<br><br>
+      אבל <span class="bold">לבנות מערכת דיגיטלית?</span> זה לא היה באזור שלי. בכלל.<br><br>
+      אני מהאנשים שקוראים ל"בן של השכן" כשהמחשב נתקע. 😂
+    </p>
+  </div>
+</div>
+
+<!-- Slide 6: Meital & Liron -->
+<div class="slide slide-6" data-slide="6">
+  <div class="big-emoji">💥</div>
+  <h2>ואז הגיעו מיטל ולירון</h2>
+  <div class="content-box">
+    <p>
+      <span class="highlight">מיטל ולירון</span> — תותחליות, אין מילה אחרת.<br><br>
+      הן לא אמרו "תלמד לתכנת". הן אמרו: <span class="bold">"מה הבעיה שלך? בוא נפתור אותה."</span><br><br>
+      הן לקחו את הבלגן שלי — הניירות, האקסלים, הרשימות — ועזרו לי להפוך את זה ל<span class="highlight">כלי אחד, נקי, שעובד</span>.<br><br>
+      בלי לשבור לי את הראש. בלי שהרגשתי טיפש. פשוט <span class="bold">ליוו אותי צעד צעד</span>. 🙏
+    </p>
+  </div>
+</div>
+
+<!-- Slide 7: What I learned -->
+<div class="slide slide-7" data-slide="7">
+  <h2>מה אני לוקח מהתהליך</h2>
+  <div class="content-box">
+    <ul class="feature-list">
+      <li><span class="icon">🔓</span>טכנולוגיה היא לא מנעול — היא <strong>מפתח</strong>. צריך רק מישהו שיראה לך איפה החור</li>
+      <li><span class="icon">📊</span>לוח גאנט זה לא "של מנהלי פרויקטים" — זה גם <strong>שלי</strong>, של הריכוז החברתי</li>
+      <li><span class="icon">🔁</span>בשנה הבאה לא מתחיל מאפס — יש <strong>בסיס</strong>, אני רק מעדכן ומשפר</li>
+      <li><span class="icon">🧠</span>AI לא מחליף אותי — הוא עוזר לי <strong>לעשות את מה שאני כבר יודע</strong>, יותר טוב</li>
+      <li><span class="icon">💪</span>אם אני הצלחתי — <strong>כל רכז, כל מחנך</strong> יכולים</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Slide 8: Thank you -->
+<div class="slide slide-8" data-slide="8">
+  <h2>תודה 🙏</h2>
+  <div class="quote">
+    "שנה שלמה על מסך אחד.<br>
+    כל אירוע, כל טקס, כל פעילות — במקום אחד.<br>
+    סוף סוף יש לי שליטה."
+  </div>
+  <div class="credit-section">
+    <div class="credit-card">
+      <div class="name">מיטל</div>
+      <div class="role">מנחת ההשתלמות</div>
+    </div>
+    <div class="credit-card">
+      <div class="name">לירון</div>
+      <div class="role">מנחת ההשתלמות</div>
+    </div>
+  </div>
+  <div style="margin-top: 40px; opacity: 0.6; font-size: 0.95rem;">
+    יעקב — רכז חברתי | תיכון אורט בית הערבה | תשפ"ו
+  </div>
+</div>
+
+<!-- Navigation -->
+<nav class="nav">
+  <button class="nav-btn" onclick="prevSlide()">&#8594;</button>
+  <div class="dots" id="dots"></div>
+  <span class="slide-counter" id="counter">1 / 8</span>
+  <button class="nav-btn" onclick="nextSlide()">&#8592;</button>
+</nav>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+const dotsContainer = document.getElementById('dots');
+for (let i = 0; i < total; i++) {
+  const dot = document.createElement('div');
+  dot.className = 'dot' + (i === 0 ? ' active' : '');
+  dot.onclick = () => goTo(i);
+  dotsContainer.appendChild(dot);
+}
+
+function goTo(n) {
+  slides[current].classList.remove('active');
+  dotsContainer.children[current].classList.remove('active');
+  current = n;
+  slides[current].classList.add('active');
+  dotsContainer.children[current].classList.add('active');
+  document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+}
+
+function nextSlide() { goTo((current + 1) % total); }
+function prevSlide() { goTo((current - 1 + total) % total); }
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') nextSlide();
+  if (e.key === 'ArrowRight' || e.key === 'ArrowUp') prevSlide();
+});
+
+let touchStartX = 0;
+document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', (e) => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) diff > 0 ? nextSlide() : prevSlide();
+});
+</script>
+</body>
+</html>
